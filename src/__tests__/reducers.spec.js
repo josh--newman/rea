@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const { position } = require('../reducers');
-const { place, move } = require('../actions');
+const { place, move, rotate } = require('../actions');
 const { directions } = require('../constants');
 
 describe('reducers', function() {
@@ -62,6 +62,44 @@ describe('reducers', function() {
           facing: directions.EAST,
           x: 2,
           y: 1
+        });
+      });
+    });
+
+    describe('rotate', function() {
+      it('ignores invalid rotation commands', function() {
+        const state = {
+          facing: directions.EAST,
+          x: 2,
+          y: 1
+        };
+        const action = rotate('FOO');
+        expect(position(state, action)).to.deep.equal(state);
+      });
+
+      it('rotates robot correctly left', function () {
+        const state = {
+          facing: directions.NORTH,
+          x: 0,
+          y: 0
+        };
+        const action = rotate('LEFT');
+        expect(position(state, action)).to.deep.equal({
+          ...state,
+          facing: directions.WEST
+        });
+      });
+
+      it('rotates robot correctly right', function () {
+        const state = {
+          facing: directions.WEST,
+          x: 0,
+          y: 0
+        };
+        const action = rotate('RIGHT');
+        expect(position(state, action)).to.deep.equal({
+          ...state,
+          facing: directions.NORTH
         });
       });
     });

@@ -9,7 +9,11 @@ function isOutsideBounds(x, y) {
   )
 }
 
-function position(state = {}, action) {
+function position(state = {
+  facing: null,
+  x: null,
+  y: null
+}, action) {
   switch(action.type) {
     case actions.PLACE:
       // Don't allow placement outside the board constraints
@@ -52,6 +56,26 @@ function position(state = {}, action) {
           y: newY
         }
       }
+
+    case actions.ROTATE:
+      let facing = state.facing;
+      if (action.direction === 'LEFT') {
+        // Using the directions constant enum
+        // NORTH is 1 and WEST is 4
+        // Checking for 0 is a special case for turning NORTH to WEST (left)
+        facing = (state.facing - 1) === 0 ?
+          directions.WEST : (state.facing - 1)
+      }
+      else if (action.direction === 'RIGHT') {
+        // Modulus ensures "circular" movement
+        // Example: moving WEST (4) to NORTH (1)
+        // (4 + 1) % 4 === 1
+        facing = (state.facing + 1) % 4
+      }
+      return {
+        ...state,
+        facing
+      };
     default: return state;
   }
 }
