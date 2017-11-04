@@ -1,9 +1,39 @@
 const { expect } = require('chai');
-const { position, calculateState } = require('../reducers');
+const {
+  isOutsideBounds,
+  isNotYetPlaced,
+  position,
+  calculateState
+} = require('../reducers');
 const { place, move, rotate } = require('../actions');
 const { directions } = require('../constants');
 
 describe('reducers', function() {
+  describe('isOutsideBounds', function() {
+    it('returns true if x,y is outside bounds', function() {
+      expect(isOutsideBounds(-1, 3)).to.equal(true);
+      expect(isOutsideBounds(-1, -5)).to.equal(true);
+      expect(isOutsideBounds(1, -5)).to.equal(true);
+    });
+
+    it('returns false if x,y is inside bounds', function() {
+      expect(isOutsideBounds(1, 3)).to.equal(false);
+      expect(isOutsideBounds(4, 4)).to.equal(false);
+      expect(isOutsideBounds(3, 1)).to.equal(false);
+    });
+  });
+
+  describe('isNotYetPlaced', function() {
+    it('calculates if robot not placed', function() {
+      const state = {
+        facing: null,
+        x: null,
+        y: null
+      }
+      expect(isNotYetPlaced(state)).to.equal(true);
+    });
+  });
+
   describe('position', function() {
     it('returns state', function() {
       const state = {
@@ -41,6 +71,16 @@ describe('reducers', function() {
     });
 
     describe('move', function() {
+      it('ignores move if robot not yet placed', function() {
+        const state = {
+          facing: null,
+          x: null,
+          y: null
+        };
+        const action = move();
+        expect(position(state, action)).to.deep.equal(state);
+      });
+
       it('ignores moves that would cause robot to fall', function() {
         const state = {
           facing: directions.WEST,
@@ -67,6 +107,16 @@ describe('reducers', function() {
     });
 
     describe('rotate', function() {
+      it('ignores rotate if robot not yet placed', function () {
+        const state = {
+          facing: null,
+          x: null,
+          y: null
+        };
+        const action = rotate('LEFT');
+        expect(position(state, action)).to.deep.equal(state);
+      });
+
       it('ignores invalid rotation commands', function() {
         const state = {
           facing: directions.EAST,

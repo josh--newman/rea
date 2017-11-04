@@ -15,6 +15,10 @@ function isOutsideBounds(x, y) {
   )
 }
 
+function isNotYetPlaced(state) {
+  return !state.facing && !state.x && !state.y
+}
+
 function position(state = INITIAL_STATE, action) {
   switch(action.type) {
     case actions.PLACE:
@@ -29,6 +33,9 @@ function position(state = INITIAL_STATE, action) {
       }
 
     case actions.MOVE:
+      // Ignore if not placed
+      if (isNotYetPlaced(state)) return state;
+
       // Calculate new X and Y coords
       // based on direction 
       let newX = state.x;
@@ -60,6 +67,9 @@ function position(state = INITIAL_STATE, action) {
       }
 
     case actions.ROTATE:
+      // Ignore if not placed
+      if (isNotYetPlaced(state)) return state;
+
       let facing = state.facing;
       if (action.direction === 'LEFT') {
         // Using the directions constant enum
@@ -90,6 +100,7 @@ function calculateState(actions, initialState = INITIAL_STATE) {
 
 module.exports = {
   isOutsideBounds,
+  isNotYetPlaced,
   position,
   calculateState
 };
