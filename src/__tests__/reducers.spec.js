@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const { position } = require('../reducers');
-const { place } = require('../actions');
+const { place, move } = require('../actions');
 const { directions } = require('../constants');
 
 describe('reducers', function() {
@@ -36,6 +36,32 @@ describe('reducers', function() {
           facing: directions.WEST,
           x: 3,
           y: 3
+        });
+      });
+    });
+
+    describe('move', function() {
+      it('ignores moves that would cause robot to fall', function() {
+        const state = {
+          facing: directions.WEST,
+          x: 0,
+          y: 0
+        };
+        const action = move();
+        expect(position(state, action)).to.deep.equal(state);
+      });
+
+      it('moves robot one position', function () {
+        const state = {
+          facing: directions.EAST,
+          x: 1,
+          y: 1
+        };
+        const action = move();
+        expect(position(state, action)).to.deep.equal({
+          facing: directions.EAST,
+          x: 2,
+          y: 1
         });
       });
     });
