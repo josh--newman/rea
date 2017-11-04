@@ -1,6 +1,12 @@
 const { actions } = require('./actions');
 const { directions } = require('./constants');
 
+const INITIAL_STATE = {
+  facing: null,
+  x: null,
+  y: null
+}
+
 // Checks to see if coords are outside the board
 function isOutsideBounds(x, y) {
   return (
@@ -9,11 +15,7 @@ function isOutsideBounds(x, y) {
   )
 }
 
-function position(state = {
-  facing: null,
-  x: null,
-  y: null
-}, action) {
+function position(state = INITIAL_STATE, action) {
   switch(action.type) {
     case actions.PLACE:
       // Don't allow placement outside the board constraints
@@ -80,7 +82,14 @@ function position(state = {
   }
 }
 
+function calculateState(actions, initialState = INITIAL_STATE) {
+  return actions.reduce((state, action) => {
+    return position(state, action)
+  }, initialState)
+}
+
 module.exports = {
   isOutsideBounds,
-  position
+  position,
+  calculateState
 };

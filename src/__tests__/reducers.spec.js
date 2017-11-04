@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { position } = require('../reducers');
+const { position, calculateState } = require('../reducers');
 const { place, move, rotate } = require('../actions');
 const { directions } = require('../constants');
 
@@ -100,6 +100,46 @@ describe('reducers', function() {
         expect(position(state, action)).to.deep.equal({
           ...state,
           facing: directions.NORTH
+        });
+      });
+    });
+
+    describe('calculateState', function() {
+      it('calculates state given a set of actions', function() {
+        // Example A
+        const actionsA = [
+          place(0, 0, directions.NORTH),
+          move()
+        ];
+        expect(calculateState(actionsA)).to.deep.equal({
+          facing: directions.NORTH,
+          x: 0,
+          y: 1
+        });
+
+        // Example B
+        const actionsB = [
+          place(0, 0, directions.NORTH),
+          rotate('LEFT')
+        ];
+        expect(calculateState(actionsB)).to.deep.equal({
+          facing: directions.WEST,
+          x: 0,
+          y: 0
+        });
+
+        // Example C
+        const actionsC = [
+          place(1, 2, directions.EAST),
+          move(),
+          move(),
+          rotate('LEFT'),
+          move()
+        ];
+        expect(calculateState(actionsC)).to.deep.equal({
+          facing: directions.NORTH,
+          x: 3,
+          y: 3
         });
       });
     });
