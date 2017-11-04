@@ -27,16 +27,9 @@ const rotate = (direction) => {
   }
 };
 
-const report = () => {
-  return {
-    type: actions.REPORT
-  }
-};
-
 module.exports = {
   actions,
   place,
   move,
   rotate,
-  report
 }
