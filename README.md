@@ -24,7 +24,8 @@
 {
   type: 'PLACE',
   x: 0,
-  y: 1
+  y: 1,
+  facing: 'NORTH'
 }
 ```
 
