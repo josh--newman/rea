@@ -84,6 +84,8 @@ To run the program:
 
 `npm start '<path_to_input_file>'`
 
+There are six example input files you can use to test in the `examples/` folder.
+
 ## Testing
 To run the tests:
 
