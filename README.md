@@ -80,6 +80,8 @@ The reducer takes an action and returns new state based on that action. It also 
 ## Running
 To run the program:
 
+Make sure you have `node v8.9.0` installed. This program uses recent Javascript features that may not be present in earlier versions of node.
+
 `yarn start '<path_to_input_file>'` OR
 
 `npm start '<path_to_input_file>'`
