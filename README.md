@@ -1,7 +1,9 @@
 # Toy Robot Challenge
 
 ## Approach
-This program uses state management concepts borrowed from the [`Redux`](http://redux.js.org/docs/introduction/CoreConcepts.html) philosophy.
+This program uses state management concepts borrowed from the [Redux](http://redux.js.org/docs/introduction/CoreConcepts.html) philosophy.
+
+The ommitance of any sort of "board" class or concept is intentional. There is no real need for it. The board contraints can simply be measured by making sure the `x` and `y` coordinates don't go below 0 or above 4.
 
 ### The reducer
 The program's state is calculated using a single `reducer`. This reducer is a pure function which takes the previous state and an `action`. The reducer returns a new state based on the given action. It does not mutate the existing state. An example of the state object is given below.
