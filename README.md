@@ -12,8 +12,11 @@ The actions are standardised objects which contain the intended manipulation (PL
 ### Calculating state
 Calculating state therefore becomes extremely simple. It's simply the set of actions piped through the reducer with each iteration returning a new state object. Put into code:
 ```js
-const finalState = actions.reduce((state, action) => reducer(state, action), initalState)
+const finalState = actions.reduce((state, action) => reducer(state, action), initialState)
 ```
+
+## Tech stack
+This program is written using `node v8.9.0`. The main program is pure Javascript and has no dependencies. The tests use `mocha`, `chai` and `sinon`.
 
 ## Program components
 ### The file parser
@@ -23,11 +26,14 @@ The parser reads lines from the file and converts them into actions.
 
 ### Actions
 `src/actions.js`
+
 Standardised action objects for each possible command
 
 ### The reducer
 `src/reducers.js`
+
 The reducer takes an action and returns new state based on that action. It also handles the basic validation required.
+
 
 ## Example state
 ```js
@@ -70,3 +76,17 @@ The reducer takes an action and returns new state based on that action. It also 
   type: 'REPORT'
 }
 ```
+
+## Running
+To run the program:
+
+`yarn start '<path_to_input_file>'` OR
+
+`npm start '<path_to_input_file>'`
+
+## Testing
+To run the tests:
+
+`yarn && yarn test` OR
+
+`npm install && npm test`
