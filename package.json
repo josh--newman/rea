@@ -14,7 +14,7 @@
     "sinon-chai": "^2.14.0"
   },
   "scripts": {
-    "run": "node index.js",
+    "start": "node index.js",
     "test": "mocha --require ./src/__tests__/testHelper.js 'src/**/*.spec.js'"
   }
 }

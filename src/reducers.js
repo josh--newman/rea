@@ -1,5 +1,10 @@
 const { actions } = require('./actions');
-const { directions } = require('./constants');
+const {
+  directions,
+  NUM_DIRECTIONS,
+  MIN_BOARD,
+  MAX_BOARD
+} = require('./constants');
 const { reportToConsole } = require('./parser');
 
 const INITIAL_STATE = {
@@ -11,13 +16,13 @@ const INITIAL_STATE = {
 // Checks to see if coords are outside the board
 function isOutsideBounds(x, y) {
   return (
-    (x < 0 || x > 4) ||
-    (y < 0 || y > 4)
+    (x < MIN_BOARD || x > MAX_BOARD) ||
+    (y < MIN_BOARD || y > MAX_BOARD)
   )
 }
 
 function isNotYetPlaced(state) {
-  return !state.facing && !state.x && !state.y
+  return state.facing == null && !state.x && !state.y
 }
 
 function position(state = INITIAL_STATE, action, {
@@ -79,14 +84,14 @@ function position(state = INITIAL_STATE, action, {
         // Using the directions constant enum
         // NORTH is 1 and WEST is 4
         // Checking for 0 is a special case for turning NORTH to WEST (left)
-        facing = (state.facing - 1) === 0 ?
+        facing = (state.facing - 1) === -1 ?
           directions.WEST : (state.facing - 1)
       }
       else if (action.direction === 'RIGHT') {
         // Modulus ensures "circular" movement
         // Example: moving WEST (4) to NORTH (1)
         // (4 + 1) % 4 === 1
-        facing = (state.facing + 1) % 4
+        facing = (state.facing + 1) % NUM_DIRECTIONS
       }
       return {
         ...state,
@@ -96,7 +101,7 @@ function position(state = INITIAL_STATE, action, {
       case actions.REPORT:
         // No state manipulation here
         // Just report to stdout
-        _reportToConsole(state);
+        !isNotYetPlaced(state) && _reportToConsole(state);
         return state;
     default: return state;
   }

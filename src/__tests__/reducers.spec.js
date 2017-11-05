@@ -39,7 +39,7 @@ describe('reducers', function() {
   describe('position', function() {
     it('returns state', function() {
       const state = {
-        facing: 'NORTH',
+        facing: directions.NORTH,
         x: 0,
         y: 1
       };
