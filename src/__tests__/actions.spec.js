@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { place, move, rotate } = require('../actions');
+const { place, move, rotate, report } = require('../actions');
 const { directions } = require('../constants');
 
 describe('actions', function() {
@@ -27,6 +27,14 @@ describe('actions', function() {
       expect(rotate('LEFT')).to.deep.equal({
         type: 'ROTATE',
         direction: 'LEFT'
+      });
+    });
+  });
+
+  describe('report', function () {
+    it('forms a `report` action object', function () {
+      expect(report()).to.deep.equal({
+        type: 'REPORT'
       });
     });
   });

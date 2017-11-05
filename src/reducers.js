@@ -1,5 +1,6 @@
 const { actions } = require('./actions');
 const { directions } = require('./constants');
+const { reportToConsole } = require('./parser');
 
 const INITIAL_STATE = {
   facing: null,
@@ -19,7 +20,10 @@ function isNotYetPlaced(state) {
   return !state.facing && !state.x && !state.y
 }
 
-function position(state = INITIAL_STATE, action) {
+function position(state = INITIAL_STATE, action, {
+  // dependency injection
+  _reportToConsole = reportToConsole
+} = {}) {
   switch(action.type) {
     case actions.PLACE:
       // Don't allow placement outside the board constraints
@@ -88,6 +92,12 @@ function position(state = INITIAL_STATE, action) {
         ...state,
         facing
       };
+
+      case actions.REPORT:
+        // No state manipulation here
+        // Just report to stdout
+        _reportToConsole(state);
+        return state;
     default: return state;
   }
 }

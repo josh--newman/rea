@@ -1,12 +1,14 @@
 const { expect } = require('chai');
+const { spy } = require('sinon');
 const {
   isOutsideBounds,
   isNotYetPlaced,
   position,
   calculateState
 } = require('../reducers');
-const { place, move, rotate } = require('../actions');
+const { place, move, rotate, report } = require('../actions');
 const { directions } = require('../constants');
+const parser = require('../parser');
 
 describe('reducers', function() {
   describe('isOutsideBounds', function() {
@@ -151,6 +153,22 @@ describe('reducers', function() {
           ...state,
           facing: directions.NORTH
         });
+      });
+    });
+
+    describe('report', function() {
+      it('reports state to console', function() {
+        const _reportToConsole = spy();
+        const state = {
+          facing: directions.WEST,
+          x: 0,
+          y: 0
+        };
+        const action = report();
+        expect(position(state, action, { _reportToConsole }))
+          .to.deep.equal(state);
+        expect(_reportToConsole).to.have.been.calledOnce;
+        expect(_reportToConsole).to.have.been.calledWith(state);
       });
     });
 
